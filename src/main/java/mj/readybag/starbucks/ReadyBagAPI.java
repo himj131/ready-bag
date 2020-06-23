@@ -2,7 +2,9 @@ package mj.readybag.starbucks;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
 
@@ -21,9 +23,12 @@ public class ReadyBagAPI {
         return "hello";
     }
 
-    @GetMapping("/pinkbag-count/{id}/{pwd}")
-    public void getPinkBagCount(@PathVariable("id") String id,
-                                @PathVariable("pwd") String pwd) throws IOException {
-        bagCountService.getCount(id, pwd);
+    @RequestMapping(value = "/ready-bag/{id}/{pwd}", method = RequestMethod.GET)
+    public String getPinkBagCount(@PathVariable("id") String id,
+                                @PathVariable("pwd") String pwd,
+                                Model model) throws IOException {
+        Info info = bagCountService.getCount(id, pwd);
+        model.addAttribute("info", info);
+        return "info";
     }
 }

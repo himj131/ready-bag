@@ -1,5 +1,6 @@
 package mj.readybag.starbucks;
 
+import com.google.gson.Gson;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
@@ -14,21 +15,24 @@ public class BagCountService {
 
     Map<String, String> loginTryCookie;
 
-    public ApiResponse<StoreInfo> getCount(String id, String pwd) throws IOException {
+    public Info getCount(String id, String pwd) throws IOException {
         Map<String, String> loginPageCookie = goLoginPage();
         loginStarbucks(id, pwd, loginPageCookie);
-        getReadyBagCount();
-        return null;
+        String data = getReadyBagCount();
+        System.out.println(data);
+        Gson gson = new Gson();
+        Info storeInfo = gson.fromJson(data, Info.class);
+        return storeInfo;
     }
 
-    private void getReadyBagCount() throws IOException {
+    private String getReadyBagCount() throws IOException {
         String countResponse = Jsoup.connect(BAG_COUNT_URL)
                 .timeout(3000)
                 .method(Connection.Method.GET)
                 .ignoreContentType(true)
                 .cookies(loginTryCookie)
                 .execute().body();
-        System.out.println(countResponse);
+        return countResponse;
     }
 
     private Map<String, String> goLoginPage() throws IOException {
