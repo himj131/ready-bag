@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,14 +17,34 @@ public class BagCountService {
 
     Map<String, String> loginTryCookie;
 
-    public Info getCount(String id, String pwd) throws IOException {
+    public List<StockInfo> getCount(String id, String pwd) throws IOException {
         Map<String, String> loginPageCookie = goLoginPage();
         loginStarbucks(id, pwd, loginPageCookie);
         String data = getReadyBagCount();
         System.out.println(data);
         Gson gson = new Gson();
         Info storeInfo = gson.fromJson(data, Info.class);
-        return storeInfo;
+        List<StockInfo> results = new ArrayList<>();
+        for(int i = 0; i < storeInfo.stockList.size(); i++) {
+            BagStock bagStock = storeInfo.stockList.get(0);
+            StockInfo stockInfo = new StockInfo();
+
+            if(bagStock.getBAG_GREEN_COUNT() > 0 &&
+                bagStock.getBAG_PINK_COUNT() > 0) {
+                for (Store store : storeInfo.storeList) {
+                    if(bagStock.getSTORE_CD() == store.getStore_cd()) {
+                        stockInfo.setGreenCount(bagStock.getBAG_GREEN_COUNT());
+                        stockInfo.setPinkCount(bagStock.getBAG_PINK_COUNT());
+                        stockInfo.setStoreAddr(store.getAddress());
+                        stockInfo.setStoreName(store.getStore_nm());
+                        results.add(stockInfo);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return results;
     }
 
     private String getReadyBagCount() throws IOException {

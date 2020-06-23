@@ -5,6 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="${info}" />
+<table>
+    <thead>
+        <tr>
+            <th>GREEN</th>
+            <th>PINK</th>
+            <th>STORE NAME</th>
+            <th>ADDR</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="info: ${infos}">
+            <td th:text="${info.greenCount}"></td>
+            <td th:text="${info.pinkCount}"></td>
+            <td th:text="${info.storeName}"></td>
+            <td th:text="${info.storeAddr}"></td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class ReadyBagAPI {
@@ -27,8 +28,8 @@ public class ReadyBagAPI {
     public String getPinkBagCount(@PathVariable("id") String id,
                                 @PathVariable("pwd") String pwd,
                                 Model model) throws IOException {
-        Info info = bagCountService.getCount(id, pwd);
-        model.addAttribute("info", info);
+        List<StockInfo> infos = bagCountService.getCount(id, pwd);
+        model.addAttribute("infos", infos);
         return "info";
     }
 }
