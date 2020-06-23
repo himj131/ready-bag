@@ -1,12 +1,12 @@
 package mj.readybag.starbucks;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RestController
+@Controller
 public class ReadyBagAPI {
     BagCountService bagCountService;
 
@@ -14,10 +14,11 @@ public class ReadyBagAPI {
         this.bagCountService = bagCountService;
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        System.out.println("Hello ready-bag World");
-        return "Hello ready-bag World";
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String hello(Model model){
+        String result = "Hello ready-bag World";
+        model.addAttribute("result", result);
+        return "hello";
     }
 
     @GetMapping("/pinkbag-count/{id}/{pwd}")
