@@ -6,20 +6,20 @@
 </head>
 <body>
 <table>
-    <thead>
+    <thead th:style="'background : #98EBDC'">
         <tr>
-            <th>GREEN</th>
-            <th>PINK</th>
-            <th>STORE NAME</th>
-            <th>ADDR</th>
+            <th>매장명</th>
+            <th>PINK 수량</th>
+            <th>GREEN 수량</th>
+            <th>매장 주소</th>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="info: ${infos}">
-            <td th:text="${info.greenCount}"></td>
-            <td th:text="${info.pinkCount}"></td>
-            <td th:text="${info.storeName}"></td>
-            <td th:text="${info.storeAddr}"></td>
+        <tr th:each="info: ${infos}" th:style="${info.totalBagCnt > 0 ? 'background: #FFCA9B' : 'background: #F0FFF0'}">
+            <td th:class="ui-state-highlight" th:text="${info.storeName}"></td>
+            <td th:class="ui-state-highlight" th:text="${info.pinkCount}"></td>
+            <td th:class="ui-state-highlight" th:text="${info.greenCount}"></td>
+            <td th:class="ui-state-highlight" th:text="${info.storeAddr}"></td>
         </tr>
     </tbody>
 </table>

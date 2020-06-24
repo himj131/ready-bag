@@ -26,20 +26,17 @@ public class BagCountService {
         Info storeInfo = gson.fromJson(data, Info.class);
         List<StockInfo> results = new ArrayList<>();
         for(int i = 0; i < storeInfo.stockList.size(); i++) {
-            BagStock bagStock = storeInfo.stockList.get(0);
+            BagStock bagStock = storeInfo.stockList.get(i);
             StockInfo stockInfo = new StockInfo();
-
-            if(bagStock.getBAG_GREEN_COUNT() > 0 &&
-                bagStock.getBAG_PINK_COUNT() > 0) {
-                for (Store store : storeInfo.storeList) {
-                    if(bagStock.getSTORE_CD() == store.getStore_cd()) {
-                        stockInfo.setGreenCount(bagStock.getBAG_GREEN_COUNT());
-                        stockInfo.setPinkCount(bagStock.getBAG_PINK_COUNT());
-                        stockInfo.setStoreAddr(store.getAddress());
-                        stockInfo.setStoreName(store.getStore_nm());
-                        results.add(stockInfo);
-                        break;
-                    }
+            for (Store store : storeInfo.storeList) {
+                if(bagStock.getSTORE_CD() == store.getStore_cd()) {
+                    stockInfo.setGreenCount(bagStock.getBAG_GREEN_COUNT());
+                    stockInfo.setPinkCount(bagStock.getBAG_PINK_COUNT());
+                    stockInfo.setTotalBagCnt(bagStock.getBAG_GREEN_COUNT() + bagStock.getBAG_PINK_COUNT());
+                    stockInfo.setStoreAddr(store.getAddress());
+                    stockInfo.setStoreName(store.getStore_nm());
+                    results.add(stockInfo);
+                    break;
                 }
             }
         }
